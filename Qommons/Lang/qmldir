@@ -1,0 +1,5 @@
+module Qommons.Lang
+
+Object 0.1 Object.qml
+StringUtils 0.1 StringUtils.js
+StringUtils 0.2 StringUtils.mjs
