@@ -20,9 +20,9 @@ QtObject {
     //! Received JSON data of last request
     property var data: null
     //! HTTP status code of last request
-    property var status: 0
+    property int status: 0
     //! HTTP status text of last request
-    property var statusText: 0
+    property string statusText
 
     // computed
 
