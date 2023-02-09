@@ -53,7 +53,6 @@ QtObject {
     }
 
     function get(url, config) {
-        console.log("GET " + url)
         var configObj = config || {}
         configObj.url = url
         configObj.method = "GET"
@@ -116,6 +115,7 @@ QtObject {
             if (!config.responseType || config.responseType === 'text') {
                 resData = req.responseText
             } else if (config.responseType === 'json') {
+                // Check content type!
                 resData = JSON.parse(req.responseText)
             } else {
                 resData = req.response
@@ -167,6 +167,14 @@ QtObject {
         console.debug("HTTP " + config.method + " " + url)
         req.open(config.method.toUpperCase(), url, true);
 
+        if (config.responseType === 'json') {
+            req.setRequestHeader("Accept", "application/json;charset=UTF-8")
+        }
+
+        if (config.data) {
+            req.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
+        }
+
         var headers = config.headers
         for (var header in headers) {
             if (headers.hasOwnProperty(header)) {
@@ -174,12 +182,7 @@ QtObject {
             }
         }
 
-        if (config.responseType === 'json') {
-            req.setRequestHeader("Accept", "application/json;charset=UTF-8")
-        }
-
         if (config.data) {
-            req.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
             req.send(JSON.stringify(config.data));
         } else {
             req.send();
@@ -190,14 +193,14 @@ QtObject {
     function _finishWithError(errorType, errorMessage) {
         request.errorType = errorType
         request.errorMessage = errorMessage || ""
-        request.error(errorType, errorMessage || "")
         request.finished(null)
+        request.error(errorType, errorMessage || "")
     }
 
     function _finish(response) {
         request.errorType = ""
-        request.success(response)
         request.finished(response)
+        request.success(response)
     }
 
     function _parseHeaders(headers) {
