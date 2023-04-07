@@ -1,0 +1,5 @@
+namespace Qommons {
+
+void registerUuidTypes();
+
+}
