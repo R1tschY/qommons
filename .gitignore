@@ -1,0 +1,8 @@
+/build*
+
+# QtCreatore
+.cache
+*.user
+
+# VS Code
+.vscode

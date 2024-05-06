@@ -81,7 +81,7 @@ public:
     QQmlListProperty<ModelFilter> filters();
 
 protected:
-    bool acceptsRow(const QModelIndex& index, const SortFilterProxyModel& model) const override;
+    bool acceptsRow(const QModelIndex& index, const SortFilterProxyModel& model) const override = 0;
 
     void proxyModelCompleted(const SortFilterProxyModel& model) override;
 

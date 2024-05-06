@@ -1,5 +1,0 @@
-namespace Qommons {
-
-void registerModelsTypes();
-
-}

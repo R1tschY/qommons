@@ -1,4 +1,4 @@
-#include "SortFilterProxyModel.h"
+#include "sortfilterproxymodel.h"
 
 #include <utility>
 #include <algorithm>
@@ -242,5 +242,5 @@ void SortFilterProxyModel::onSourceModelChanged()
 
 }
 
-#include "SortFilterProxyModel.moc"
+#include "sortfilterproxymodel.moc"
 

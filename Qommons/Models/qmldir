@@ -1,0 +1,4 @@
+module Qommons.Models
+
+plugin qommons-models
+classname ModelsModulePlugin

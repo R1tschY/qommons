@@ -1,11 +1,15 @@
-#include "SortFilterProxyModel.h"
+#include "plugin.h"
 
 #include <QtQml>
 
+#include "sortfilterproxymodel.h"
+
 namespace Qommons {
 
-void registerModelsTypes()
+void ModelsModulePlugin::registerTypes(const char *uri)
 {
+    Q_ASSERT(uri == QLatin1String("Qommons.Models"));
+
     qmlRegisterType<SortFilterProxyModel>("Qommons.Models", 0, 1, "SortFilterProxyModel");
 
     qmlRegisterType<EqualsFilter>("Qommons.Models", 0, 1, "EqualsFilter");

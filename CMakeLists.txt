@@ -1,12 +1,21 @@
-project(qommons CXX)
 cmake_minimum_required(VERSION 3.5)
+project(qommons VERSION 0.1 LANGUAGES CXX)
+
+enable_testing()
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 list(APPEND QML_IMPORT_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
-set(QML_IMPORT_PATH "${QML_IMPORT_PATH}" PARENT_SCOPE)
+set(QOMMONS_IMPORT_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
+#set(QML_IMPORT_PATH "${QML_IMPORT_PATH}" PARENT_SCOPE)
 
+include(GNUInstallDirs)
+
+set(QOMMONS_QML_INSTALL_PATH "${CMAKE_INSTALL_DATADIR}/qml" CACHE PATH "Path where to install QML files")
 
 set(CMAKE_AUTOMOC ON)
-find_package(Qt5 COMPONENTS Core Qml Quick REQUIRED)
+find_package(Qt5 COMPONENTS Core Qml Quick QuickTest REQUIRED)
 
 # Http
 add_custom_target(qommons-http
@@ -51,15 +60,7 @@ target_link_libraries(qommons-process Qt5::Core Qt5::Qml)
 target_include_directories(qommons-process PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Models
-add_library(
-    qommons-models STATIC
-    Qommons/Models/Types.h
-    Qommons/Models/Types.cpp
-    Qommons/Models/SortFilterProxyModel.h
-    Qommons/Models/SortFilterProxyModel.cpp
-)
-target_link_libraries(qommons-models Qt5::Core Qt5::Qml)
-target_include_directories(qommons-models PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+add_subdirectory(Qommons/Models)
 
 # UUID
 add_library(
