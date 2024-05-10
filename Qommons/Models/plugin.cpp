@@ -12,6 +12,8 @@ void ModelsModulePlugin::registerTypes(const char *uri)
 
     qmlRegisterType<SortFilterProxyModel>("Qommons.Models", 0, 1, "SortFilterProxyModel");
 
+    qRegisterMetaType<ModelFilter*>();
+    qmlRegisterUncreatableType<ModelFilter>("Qommons.Models", 0, 1, "ModelFilter", "abstract type");
     qmlRegisterType<EqualsFilter>("Qommons.Models", 0, 1, "EqualsFilter");
     qmlRegisterType<AllOfFilter>("Qommons.Models", 0, 1, "AllOfFilter");
     qmlRegisterType<AnyOfFilter>("Qommons.Models", 0, 1, "AnyOfFilter");

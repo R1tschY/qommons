@@ -178,3 +178,5 @@ private:
 };
 
 }
+
+Q_DECLARE_METATYPE(Qommons::ModelFilter*)
