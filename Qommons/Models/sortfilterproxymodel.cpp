@@ -46,7 +46,7 @@ void AbstractRoleFilter::handleSourceModelReset(const SortFilterProxyModel& mode
 
 QVariant AbstractRoleFilter::roleData(const QModelIndex &index, const SortFilterProxyModel &model) const
 {
-    return model.data(index, m_role);
+    return model.sourceModel()->data(index, m_role);
 }
 
 // EqualsFilter
@@ -236,8 +236,16 @@ void SortFilterProxyModel::setFilter(ModelFilter *value)
 
 void SortFilterProxyModel::onSourceModelChanged()
 {
+    auto* model = sourceModel();
+
+    if (model) {
+        m_roleNames = model->roleNames();
+    } else {
+        m_roleNames.clear();
+    }
+
     if (m_filter != nullptr) {
-        m_filter->proxyModelCompleted(*this);
+        m_filter->handleSourceModelReset(*this);
     }
 }
 

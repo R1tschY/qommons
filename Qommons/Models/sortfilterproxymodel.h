@@ -157,7 +157,7 @@ class SortFilterProxyModel : public QSortFilterProxyModel {
     Q_OBJECT
     Q_PROPERTY(ModelFilter* filter READ filter WRITE setFilter NOTIFY filterChanged)
 public:
-    SortFilterProxyModel(QObject* parent = nullptr);
+    explicit SortFilterProxyModel(QObject* parent = nullptr);
     ~SortFilterProxyModel();
 
     bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
