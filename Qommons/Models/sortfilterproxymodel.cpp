@@ -191,6 +191,7 @@ bool NoneOfFilter::acceptsRow(const QModelIndex &index, const SortFilterProxyMod
 
 SortFilterProxyModel::SortFilterProxyModel(QObject* parent)
     : QSortFilterProxyModel(parent)
+    , m_filter(nullptr)
 {
     connect(
                 this, &QAbstractProxyModel::sourceModelChanged,
@@ -201,12 +202,12 @@ SortFilterProxyModel::~SortFilterProxyModel() = default;
 
 bool SortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex &sourceParent) const
 {
-    QModelIndex sourceIndex = index(source_row, 0);
+    QModelIndex sourceIndex = sourceModel()->index(source_row, 0, sourceParent);
     if (!sourceIndex.isValid()) {
         return false;
     }
 
-    return (m_filter == nullptr) || m_filter->acceptsRow(sourceIndex, *this);
+    return m_filter == nullptr || m_filter->acceptsRow(sourceIndex, *this);
 }
 
 int SortFilterProxyModel::roleByName(const QString &roleName) const

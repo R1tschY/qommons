@@ -45,7 +45,7 @@ protected:
 
 private:
     QString m_roleName;
-    int m_role;
+    int m_role = Qt::DisplayRole;
 };
 
 // EqualsFilter
