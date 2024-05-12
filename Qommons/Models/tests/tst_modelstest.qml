@@ -11,12 +11,27 @@ TestCase {
     function cleanupTestCase() {
     }
 
-    SortFilterProxyModel {
+    ListModel {
         id: model
+
+        ListElement { a: 0; v: 1; z: 0 }
+        ListElement { a: 0; v: 2; z: 0 }
+        ListElement { a: 0; v: 3; z: 0 }
     }
 
-    function test_case1() {
-        compare(1 + 1, 2, "sanity check");
-        verify(true);
+    SortFilterProxyModel {
+        id: proxyModel
+
+        sourceModel: model
+
+        filter: EqualsFilter {
+            roleName: "v"
+            value: 2
+        }
+    }
+
+    function test_equals() {
+        compare(proxyModel.count, 1);
+        compare(proxyModel.get(0, "v"), 2);
     }
 }
