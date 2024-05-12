@@ -155,9 +155,13 @@ class ModelSorter: public QObject {
 
 // SortFilterProxyModel
 
-class SortFilterProxyModel : public QSortFilterProxyModel, QQmlParserStatus {
+class SortFilterProxyModel : public QSortFilterProxyModel, public QQmlParserStatus {
     Q_OBJECT
+
+    Q_INTERFACES(QQmlParserStatus)
+
     Q_PROPERTY(ModelFilter* filter READ filter WRITE setFilter NOTIFY filterChanged)
+    Q_PROPERTY(int count READ count NOTIFY countChanged)
 public:
     explicit SortFilterProxyModel(QObject* parent = nullptr);
     ~SortFilterProxyModel();
@@ -169,8 +173,14 @@ public:
     ModelFilter* filter() const { return m_filter; }
     void setFilter(ModelFilter* value);
 
+    // ListModel like methods
+    int count() const;
+    Q_INVOKABLE QVariantMap get(int row) const;
+    Q_INVOKABLE QVariant get(int row, const QString& roleName) const;
+
 Q_SIGNALS:
     void filterChanged();
+    void countChanged();
 
 private:
     void onSourceModelChanged();

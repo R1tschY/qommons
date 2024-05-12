@@ -200,9 +200,11 @@ SortFilterProxyModel::SortFilterProxyModel(QObject* parent)
     : QSortFilterProxyModel(parent)
     , m_filter(nullptr)
 {
-    connect(
-                this, &QAbstractProxyModel::sourceModelChanged,
-                this, &SortFilterProxyModel::onSourceModelChanged);
+    connect(this, &QAbstractProxyModel::sourceModelChanged, this, &SortFilterProxyModel::onSourceModelChanged);
+    connect(this, &QAbstractItemModel::rowsInserted, this, &SortFilterProxyModel::countChanged);
+    connect(this, &QAbstractItemModel::rowsRemoved, this, &SortFilterProxyModel::countChanged);
+    connect(this, &QAbstractItemModel::modelReset, this, &SortFilterProxyModel::countChanged);
+    connect(this, &QAbstractItemModel::layoutChanged, this, &SortFilterProxyModel::countChanged);
 }
 
 SortFilterProxyModel::~SortFilterProxyModel() = default;
@@ -223,7 +225,7 @@ bool SortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex &s
 
 int SortFilterProxyModel::roleByName(const QString &roleName) const
 {
-    return m_roleNames.key(roleName.toUtf8());
+    return m_roleNames.key(roleName.toUtf8(), Qt::DisplayRole);
 }
 
 void SortFilterProxyModel::setFilter(ModelFilter *value)
@@ -246,6 +248,28 @@ void SortFilterProxyModel::setFilter(ModelFilter *value)
 
         Q_EMIT filterChanged();
     }
+}
+
+int SortFilterProxyModel::count() const
+{
+    return rowCount();
+}
+
+QVariantMap SortFilterProxyModel::get(int row) const
+{
+    QModelIndex modelIndex = index(row, 0);
+    const QHash<int, QByteArray> roles = roleNames();
+
+    QVariantMap result;
+    for (auto iter = roles.begin(); iter != roles.end(); ++iter) {
+        result.insert(iter.value(), data(modelIndex, iter.key()));
+    }
+    return result;
+}
+
+QVariant SortFilterProxyModel::get(int row, const QString& roleName) const
+{
+    return data(index(row, 0), roleByName(roleName));
 }
 
 void SortFilterProxyModel::onSourceModelChanged()
