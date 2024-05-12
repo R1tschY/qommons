@@ -89,6 +89,13 @@ void ModelFilterContainer::proxyModelCompleted(const SortFilterProxyModel &model
     }
 }
 
+void ModelFilterContainer::handleSourceModelReset(const SortFilterProxyModel &model)
+{
+    for (auto* filter : filterList()) {
+        filter->handleSourceModelReset(model);
+    }
+}
+
 void ModelFilterContainer::appendFilter(QQmlListProperty<ModelFilter>* list, ModelFilter* filter)
 {
     reinterpret_cast<ModelFilterContainer*>(list->object)->appendFilter(filter);
@@ -207,6 +214,10 @@ bool SortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex &s
         return false;
     }
 
+    if (!m_complete) {
+        return false;
+    }
+
     return m_filter == nullptr || m_filter->acceptsRow(sourceIndex, *this);
 }
 
@@ -228,6 +239,9 @@ void SortFilterProxyModel::setFilter(ModelFilter *value)
             connect(
                         m_filter, &ModelFilter::invalidated,
                         this, &SortFilterProxyModel::invalidateFilter);
+            if (m_complete) {
+                m_filter->proxyModelCompleted(*this);
+            }
         }
 
         Q_EMIT filterChanged();
@@ -236,10 +250,25 @@ void SortFilterProxyModel::setFilter(ModelFilter *value)
 
 void SortFilterProxyModel::onSourceModelChanged()
 {
-    auto* model = sourceModel();
+    if (m_sourceModel) {
+        disconnect(m_sourceModel);
+    }
+    m_sourceModel = sourceModel();
+    if (m_sourceModel) {
+        connect(m_sourceModel, &QAbstractItemModel::modelReset, this, &SortFilterProxyModel::onSourceModelReset);
+    }
 
-    if (model) {
-        m_roleNames = model->roleNames();
+    onSourceModelReset();
+}
+
+void SortFilterProxyModel::onSourceModelReset()
+{
+    if (!m_complete) {
+        return;
+    }
+
+    if (m_sourceModel) {
+        m_roleNames = m_sourceModel->roleNames();
     } else {
         m_roleNames.clear();
     }
@@ -247,6 +276,23 @@ void SortFilterProxyModel::onSourceModelChanged()
     if (m_filter != nullptr) {
         m_filter->handleSourceModelReset(*this);
     }
+}
+
+void SortFilterProxyModel::classBegin() { };
+
+void SortFilterProxyModel::componentComplete()
+{
+    m_complete = true;
+
+    if (m_filter != nullptr) {
+        m_filter->proxyModelCompleted(*this);
+    }
+
+    if (m_sourceModel) {
+        onSourceModelReset();
+    }
+
+    invalidate();
 }
 
 }

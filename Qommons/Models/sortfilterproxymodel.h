@@ -1,6 +1,7 @@
 #include <QObject>
 #include <QSortFilterProxyModel>
 #include <QQmlListProperty>
+#include <QQmlParserStatus>
 
 namespace Qommons {
 
@@ -84,6 +85,7 @@ protected:
     bool acceptsRow(const QModelIndex& index, const SortFilterProxyModel& model) const override = 0;
 
     void proxyModelCompleted(const SortFilterProxyModel& model) override;
+    void handleSourceModelReset(const SortFilterProxyModel& model) override;
 
     const QList<ModelFilter*>& filterList() const { return m_filters; }
 
@@ -153,7 +155,7 @@ class ModelSorter: public QObject {
 
 // SortFilterProxyModel
 
-class SortFilterProxyModel : public QSortFilterProxyModel {
+class SortFilterProxyModel : public QSortFilterProxyModel, QQmlParserStatus {
     Q_OBJECT
     Q_PROPERTY(ModelFilter* filter READ filter WRITE setFilter NOTIFY filterChanged)
 public:
@@ -172,7 +174,13 @@ Q_SIGNALS:
 
 private:
     void onSourceModelChanged();
+    void onSourceModelReset();
 
+    void classBegin() override;
+    void componentComplete() override;
+
+    bool m_complete = false;
+    QAbstractItemModel* m_sourceModel = nullptr;
     ModelFilter* m_filter;
     QHash<int, QByteArray> m_roleNames;
 };
