@@ -321,5 +321,5 @@ void SortFilterProxyModel::componentComplete()
 
 }
 
-#include "sortfilterproxymodel.moc"
+#include "moc_sortfilterproxymodel.cpp"
 
