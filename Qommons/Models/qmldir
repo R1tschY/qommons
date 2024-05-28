@@ -1,4 +1,4 @@
 module Qommons.Models
 
-plugin qommons-models
+plugin qommons-models-qt5
 classname ModelsModulePlugin

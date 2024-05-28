@@ -1,0 +1,4 @@
+module Qommons.Uuid
+
+plugin qommons-uuid-qt5
+classname UuidModulePlugin

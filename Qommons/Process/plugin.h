@@ -4,7 +4,7 @@
 
 namespace Qommons {
 
-class ModelsModulePlugin : public QQmlExtensionPlugin
+class ProcessModulePlugin : public QQmlExtensionPlugin
 {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID QQmlExtensionInterface_iid)

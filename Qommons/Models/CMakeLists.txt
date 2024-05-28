@@ -1,5 +1,5 @@
-qommons_qml_plugin(
-    NAME qommons-models
+qommons_qml_module(
+    PLUGIN qommons-models-qt5
     URI "Qommons.Models"
     QML_IMPORT_PATH "${QOMMONS_IMPORT_PATH}"
     QML_INSTALL_DIR "${QOMMONS_QML_INSTALL_PATH}"

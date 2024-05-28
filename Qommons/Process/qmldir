@@ -1,0 +1,4 @@
+module Qommons.Process
+
+plugin qommons-process-qt5
+classname ProcessModulePlugin

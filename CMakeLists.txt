@@ -13,7 +13,7 @@ set(QOMMONS_IMPORT_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 include(GNUInstallDirs)
-include(QmlPlugin)
+include(QmlModule)
 
 set(QOMMONS_QML_INSTALL_PATH "${CMAKE_INSTALL_DATADIR}/qml" CACHE PATH "Path where to install QML files")
 
@@ -34,7 +34,7 @@ install(
 add_custom_target(qommons-lang
     SOURCES
         Qommons/Lang/qmldir
-        Qommons/Lang/Object.qml
+        Qommons/Lang/Container.qml
         Qommons/Lang/StringUtils.js)
 install(
     DIRECTORY Qommons/Lang/
@@ -52,26 +52,10 @@ install(
 )
 
 # Process
-add_library(
-    qommons-process STATIC
-    Qommons/Process/Types.h
-    Qommons/Process/Types.cpp
-    Qommons/Process/Process.h
-    Qommons/Process/Process.cpp
-)
-target_link_libraries(qommons-process Qt5::Core Qt5::Qml)
-target_include_directories(qommons-process PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+add_subdirectory(Qommons/Process)
 
 # Models
 add_subdirectory(Qommons/Models)
 
 # UUID
-add_library(
-    qommons-uuid STATIC
-    Qommons/Uuid/Types.h
-    Qommons/Uuid/Types.cpp
-    Qommons/Uuid/Uuid.h
-    Qommons/Uuid/Uuid.cpp
-)
-target_link_libraries(qommons-uuid Qt5::Core Qt5::Qml)
-target_include_directories(qommons-uuid PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+add_subdirectory(Qommons/Uuid)

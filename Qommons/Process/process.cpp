@@ -1,4 +1,4 @@
-#include "Process.h"
+#include "process.h"
 
 #include <QProcess>
 #include <QtQml>
@@ -190,4 +190,4 @@ void ProcessOutputModel::started()
 
 }
 
-#include "Process.moc"
+#include "moc_process.cpp"

@@ -1,4 +1,4 @@
-#include "Uuid.h"
+#include "uuid.h"
 
 #include <QUuid>
 
@@ -17,4 +17,4 @@ QString Qommons::UuidFactory::createUuid() const
 
 }
 
-#include "Uuid.moc"
+#include "moc_uuid.cpp"

@@ -1,11 +1,15 @@
-#include "Process.h"
+#include "plugin.h"
 
 #include <QtQml>
 
+#include "process.h"
+
 namespace Qommons {
 
-void registerProcessTypes()
+void ProcessModulePlugin::registerTypes(const char *uri)
 {
+    Q_ASSERT(uri == QLatin1String("Qommons.Process"));
+
     qmlRegisterType<Process>(
                 "Qommons.Process", 0, 1, "Process");
 
@@ -14,3 +18,5 @@ void registerProcessTypes()
 }
 
 }
+
+#include "moc_plugin.cpp"
